@@ -9,17 +9,17 @@
 	<script type="text/babel">
 		class Greeter extends React.Component{
 
-			state = { greetMessage : '[A new dummy message]' };
-			
+			state = { greetMessage : '[A new dummy message]', userName : 'Magesh' };
+			txtUserNameRef = React.createRef();
+
 			constructor(){
 				super();
 				this.onGreetClick = this.onGreetClick.bind(this);
 			}
 			
 			onGreetClick(){
-				let userName = prompt('Enter the user name :');
-				this.setState({greetMessage : `Hi ${userName}, Have a nice day!`});
-				
+				let userName = this.txtUserNameRef.current.value;
+				this.setState({greetMessage : `Hi ${userName}, ${this.props.message}`});
 			}
 			
 			render(){
@@ -28,15 +28,15 @@
 						<h1>Greeter</h1>
 						<hr/>
 						<label htmlFor="">User Name :</label>
-						<input type="text" />
+						<input type="text" ref={this.txtUserNameRef} defaultValue={this.state.userName} />
 						<input type="button" value="Greet" onClick={this.onGreetClick}/>
 						<div>{this.state.greetMessage}</div>
 					</div>
 				);
 			}
 		}
-
-		ReactDOM.render(<Greeter />,
+		let message = 'Have a nice day!';
+		ReactDOM.render(<Greeter message={message}/>,
 			document.getElementById('root'));
 	</script>
 </head>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>React Intro</title>
+	<script src="react.js"></script>
+	<script src="react-dom.js"></script>
+	<script>
+		/*
+		  var title = document.createElement('h1');
+		  title.innerHTML = 'Welcome to React.js';
+		  document.body.appendChild(title);
+		 */
+
+		 window.addEventListener('DOMContentLoaded', init);
+		 function init(){
+		 	var btnRender = document.getElementById('btnRender');
+		 	btnRender.addEventListener('click', onBtnRenderClick);
+		 }
+		 function onBtnRenderClick(){
+		 	var appRoot = React.createElement('div', null, 
+		 		React.createElement('h1', null, 'Welcome to React.js'),
+		 		React.createElement('p', null, Date()),
+		 		React.createElement('p', null, 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse natus, possimus, repellat illum sint maiores harum, nemo soluta aliquid iusto adipisci ipsam! Corporis earum quia porro eos eligendi voluptate suscipit.'),
+		 		React.createElement('div', null, 
+		 			React.createElement('h3', null, 'Advantages'),
+		 			React.createElement('ol', null,
+		 				React.createElement('li', null, 'Declarative'),
+		 				React.createElement('li', null, 'Efficient')
+		 			)
+		 		)
+		 	);
+
+		 	ReactDOM.render(appRoot, 
+		 		document.getElementById('root'));
+		 }
+
+	</script>
+</head>
+<body>
+	<input type="button" value="Render" id="btnRender">
+	<div id="root"></div>
+</body>
+</html>

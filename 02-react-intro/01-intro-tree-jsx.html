@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>React Intro</title>
+	<script src="react.js"></script>
+	<script src="react-dom.js"></script>
+	<script src="babel.min.js"></script>
+	<script type="text/babel">
+	 	var btnRender = document.getElementById('btnRender');
+	 	btnRender.addEventListener('click', onBtnRenderClick);
+		 
+		 function onBtnRenderClick(){
+		 	let currentTime = Date();
+		 	var appRoot = (
+		 		<div>
+					<h1>Welcome to React.js</h1>
+					<hr/>
+					<p>{currentTime}</p>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt ratione, tempora ut voluptatibus dolore iusto et aut autem earum a, cupiditate alias reprehenderit dolorum illo dolorem assumenda sit, illum eveniet!</p>
+					<div>
+						<h3>React.js Advantages</h3>
+						<ol>
+							<li>Declarative</li>
+							<li>Efficient</li>
+						</ol>
+					</div>
+				</div>
+		 	)
+
+		 	ReactDOM.render(appRoot, 
+		 		document.getElementById('root'));
+		 }
+
+	</script>
+</head>
+<body>
+	<input type="button" value="Render" id="btnRender">
+	<div id="root"></div>
+</body>
+</html>

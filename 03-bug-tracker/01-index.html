@@ -65,11 +65,37 @@
 				super();
 			}
 			addNew(bugName){
-				this._list.push(bugName);
+				let newBug = {
+					name : bugName,
+					isClosed : false
+				};
+				this._list.push(newBug);
 				this.triggerChange();
 			}
 			getAll(){
 				return [...this._list];
+			}
+			toggle(bug){
+				bug.isClosed = !bug.isClosed;
+			}
+		}
+
+		class BugItem extends React.Component{
+			constructor(){
+				super();
+				this.onBugNameClick = this.onBugNameClick.bind(this);
+			}
+			onBugNameClick(){
+				console.log(this.props.bug, 'is being toggled');
+			}
+			render(){
+				let { bug } = this.props;
+				return(
+					<li >
+						<span className="bugname" onClick={this.onBugNameClick}>{bug.name}</span>
+						<div className="datetime">[Created At]</div>
+					</li>
+				)
 			}
 		}
 
@@ -78,18 +104,18 @@
 			constructor(props){
 				super(props);
 				this.onAddNewClick = this.onAddNewClick.bind(this);
+				
 			}
 			onAddNewClick(){
 				this.props.model.addNew(this.txtNewBugNameRef.current.value);
-			}	
+			}
+
+				
 			render(){
 				let { model } = this.props,
 					list = model.getAll(),
-					bugItems = list.map(bug => (
-						<li>
-							<span className="bugname">{bug}</span>
-							<div className="datetime">[Created At]</div>
-						</li>
+					bugItems = list.map((bug, index) => (
+						<BugItem bug={bug} key={index}/>
 					))
 				return(
 					<div>

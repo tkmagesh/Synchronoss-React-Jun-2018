@@ -8,8 +8,19 @@
 	<script src="babel.min.js"></script>
 	<script type="text/babel">
 		class ProductsList extends React.Component{
+			state = { list : [], newBugName : ''};
+
+			constructor(props){
+				super(props);
+				this.onAddNewClick = this.onAddNewClick.bind(this);
+			}
+			onAddNewClick(){
+				let { list, newBugName } = this.state;
+				list.push(newBugName);
+				this.setState({list : list});
+			}
 			render(){
-				let list = [];
+				let { list } = this.state;
 				let productItems = [];
 				for(let index = 0, count = list.length; index < count; index++){
 					let productItem = (<li key={index}>{list[index]}</li>);
@@ -20,8 +31,8 @@
 						<h1>Products</h1>
 						<hr/>
 						<label>Product Name:</label>
-						<input type="text" />
-						<input type="button" value="Add New" />
+						<input type="text" value={this.state.newBugName} onChange={evt => this.setState({newBugName : evt.target.value})} />
+						<input type="button" value="Add New" onClick={this.onAddNewClick} />
 						<ol>
 							{productItems}
 						</ol>
@@ -29,7 +40,20 @@
 				)
 			}
 		}
-		ReactDOM.render(<ProductsList />,
+
+		class ProductsCount extends React.Component{
+			render(){
+				let { count } = this.props;
+				return(
+					<div>{count}</div>
+				)
+			}
+		}
+		ReactDOM.render(
+			<div>
+				<ProductsCount count="0" />
+				<ProductsList />
+			</div>,
 			document.getElementById('root'));
 	</script>
 </head>

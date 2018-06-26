@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Products</title>
+	<script src="react.js"></script>
+	<script src="react-dom.js"></script>
+	<script src="babel.min.js"></script>
+	<script type="text/babel">
+		class EventEmitter{
+			_listners = [];
+			subscribe(listenerFn){
+				if (typeof listenerFn === 'function')
+					this._listners.push(listenerFn);
+			}
+			triggerChange(){
+				this._listners.forEach(listenerFn => listenerFn());
+			}
+		}
+		class ProductsCollection extends EventEmitter{
+			list = [];
+
+			addNew(productName){
+				this.list.push(productName);
+				this.triggerChange();
+			}
+			getAll(){
+				return [...this.list];
+			}
+			getCount(){
+				return this.list.length;
+			}
+		}
+		class ProductsList extends React.Component{
+			state = { newBugName : ''};
+
+			constructor(props){
+				super(props);
+				this.onAddNewClick = this.onAddNewClick.bind(this);
+			}
+			onAddNewClick(){
+				let { collection } = this.props;
+				let { newBugName } = this.state;
+				collection.addNew(newBugName);
+			}
+			render(){
+				let { collection } = this.props,
+					list = collection.getAll();
+				let productItems = [];
+				for(let index = 0, count = list.length; index < count; index++){
+					let productItem = (<li key={index}>{list[index]}</li>);
+					productItems.push(productItem);
+				}
+				return(
+					<div>
+						<h1>Products</h1>
+						<hr/>
+						<label>Product Name:</label>
+						<input type="text" value={this.state.newBugName} onChange={evt => this.setState({newBugName : evt.target.value})} />
+						<input type="button" value="Add New" onClick={this.onAddNewClick} />
+						<ol>
+							{productItems}
+						</ol>
+					</div>
+				)
+			}
+		}
+
+		class ProductsCount extends React.Component{
+			render(){
+				let { count } = this.props;
+				return(
+					<div>{count}</div>
+				)
+			}
+		}
+		let productsCollection = new ProductsCollection(); 
+		function renderApp(){
+			ReactDOM.render(
+			<div>
+				<ProductsCount count={productsCollection.getCount()}  />
+				<ProductsList collection={productsCollection}/>
+			</div>,
+			document.getElementById('root'));
+		}
+		renderApp();
+		productsCollection.subscribe(renderApp);
+	</script>
+</head>
+<body>
+	<div id="root">
+		
+	</div>
+</body>
+</html>

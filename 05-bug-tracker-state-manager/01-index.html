@@ -60,6 +60,16 @@
 				let newState = [...currentState, newBug];
 				return newState;
 			}
+			if (action.type === 'TOGGLE'){
+				let { oldBug, newBug } = action.payload;
+				let newState = currentState.map(bug => bug === oldBug ? newBug : bug);
+				return newState;
+			}
+			if (action.type === 'REMOVE'){
+				let { payload : closedBugs } = action;
+				let newState = currentState.filter(bug => closedBugs.indexOf(bug) === -1);
+				return newState;
+			}
 			return currentState;
 		}
 
@@ -71,6 +81,16 @@
 				};
 				const action = { type : 'ADD_NEW', payload : newBug };
 				return action;
+			},
+			toggle(bugToToggle){
+				let toggledBug = { ...bugToToggle, isClosed : !bugToToggle.isClosed};
+				const action = { type : 'TOGGLE', payload : {oldBug : bugToToggle, newBug : toggledBug}};
+				return action;
+			},
+			removeClosed(bugs){
+				let closedBugs = bugs.filter(bug => bug.isClosed);
+				const action = { type : 'REMOVE', payload : closedBugs};
+				return action;
 			}
 		}
 
@@ -80,8 +100,8 @@
 				this.onBugNameClick = this.onBugNameClick.bind(this);
 			}
 			onBugNameClick(){
-				//this.props.bug.toggle();
-				console.log(this.props.bug);
+				let { toggle, bug} = this.props;
+				toggle(bug);
 			}
 			render(){
 				let { bug } = this.props;
@@ -107,12 +127,12 @@
 			}
 
 			onRemoveClosedClick(){
-				//this.props.model.removeClosed();
+				this.props.removeClosed(this.props.list);
 			}
 			render(){
-				let {list} = this.props,
+				let {list, toggle} = this.props,
 					bugItems = list.map((bug, index) => (
-						<BugItem bug={bug} key={index}/>
+						<BugItem bug={bug} key={index} toggle={toggle}/>
 					));
 				return(
 					<div>

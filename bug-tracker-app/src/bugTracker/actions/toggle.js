@@ -1,6 +1,13 @@
+import bugServer from '../services/bugServer';
+
 function toggle(bugToToggle){
-	let toggledBug = { ...bugToToggle, isClosed : !bugToToggle.isClosed};
-	const action = { type : 'TOGGLE', payload : {oldBug : bugToToggle, newBug : toggledBug}};
-	return action;
+	return function(dispatch){
+		let toggledBugData = { ...bugToToggle, isClosed : !bugToToggle.isClosed};
+		bugServer.save(toggledBugData)
+			.then((toggledBug) => {
+				const action = { type : 'TOGGLE', payload : {oldBug : bugToToggle, newBug : toggledBug}};
+				dispatch(action);
+			});
+	}
 }
 export default toggle;

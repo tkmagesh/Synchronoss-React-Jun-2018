@@ -1,6 +1,8 @@
-function removeClosed(bugs){
-	let closedBugs = bugs.filter(bug => bug.isClosed);
-	const action = { type : 'REMOVE', payload : closedBugs};
-	return action;
+function removeClosed(){
+	return function(dispatch, getState){
+		let closedBugs = getState().bugsData.filter(bug => bug.isClosed);
+		const action = { type : 'REMOVE', payload : closedBugs};
+		dispatch(action);
+	}
 }
 export default removeClosed;
